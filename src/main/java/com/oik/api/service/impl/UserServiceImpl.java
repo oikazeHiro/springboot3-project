@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends MPJBaseServiceImpl<UserMapper, User> implements UserService {
 
+    @Override
+    public String test() {
+        return "null";
+    }
 }

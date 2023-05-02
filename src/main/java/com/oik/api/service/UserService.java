@@ -13,4 +13,6 @@ import com.github.yulichang.base.service.MPJJoinService;
  */
 public interface UserService extends MPJJoinService<User> {
 
+    String test();
+
 }

@@ -19,19 +19,20 @@ spring:
           min-idle: 1
           time-between-eviction-runs: 10s
       timeout: 5000
-  mybatis-plus:
-    type-aliases-package: com.oik.api.entity # 别名扫描包
-    configuration:
-      # 自动驼峰命名
-      map-underscore-to-camel-case: true
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    mapper-locations: classpath:/com/oik/api/**/*.xml
-  mybatis-plus-join:
-    #是否打印 mybatis plus join banner 默认true
-    banner: true
-    #全局启用副表逻辑删除(默认true) 关闭后关联查询不会加副表逻辑删除
-    sub-table-logic: true
-    #拦截器MappedStatement缓存(默认true)
-    ms-cache: true
-    #表别名(默认 t)
-    table-alias: t
+mybatis-plus:
+  type-aliases-package: com.oik.dao.entity # 别名扫描包
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/com/oik/dao/**/*.xml
+
+mybatis-plus-join:
+  #是否打印 mybatis plus join banner 默认true
+  banner: true
+  #全局启用副表逻辑删除(默认true) 关闭后关联查询不会加副表逻辑删除
+  sub-table-logic: true
+  #拦截器MappedStatement缓存(默认true)
+  ms-cache: true
+  #表别名(默认 t)
+  table-alias: t
