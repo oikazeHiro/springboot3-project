@@ -2,9 +2,12 @@ server:
   port: 8888
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.42.224.188:13306/program?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:mysql://101.42.224.188:13306/program?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:postgresql://localhost:5432/program
+    #    username: root
+    username: postgres
     password: root
 
   data:
