@@ -22,6 +22,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-configuration-processor:3.0.6'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.0.6'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -36,6 +37,11 @@ dependencies {
     implementation 'io.netty:netty-all:4.1.92.Final'
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.6'
+    implementation 'joda-time:joda-time:2.12.5'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.lionsoul:ip2region:2.7.0'
 }
 
 tasks.named('test') {
