@@ -5,8 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -19,7 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("sys_user")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +44,7 @@ public class User implements Serializable {
     /**
      * 密码
      */
+    @JsonIgnore
     @TableField("`PASSWORD`")
     private String password;
 
@@ -63,7 +70,7 @@ public class User implements Serializable {
      * 状态;(1)true (0)false
      */
     @TableField("`STATUS`")
-    private Byte status;
+    private Byte status = 0;
 
     /**
      * 最后登录时间
@@ -112,4 +119,33 @@ public class User implements Serializable {
      */
     @TableField("UPDATED_TIME")
     private LocalDateTime updatedTime;
+
+    @TableField(exist = false)
+    private List<Role> sysRole = new ArrayList<>();
+    @TableField(exist = false)
+    private Set<String> params = new HashSet<>();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return params.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.status == 1;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.status == 1;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.status == 1;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.status == 1;
+    }
 }

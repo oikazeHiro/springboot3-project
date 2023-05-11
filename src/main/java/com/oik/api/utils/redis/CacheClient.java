@@ -5,8 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
+import com.oik.api.entity.User;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.oik.api.utils.redis.RedisConstants.CACHE_NULL_TTL;
-import static com.oik.api.utils.redis.RedisConstants.LOCK_SHOP_KEY;
+import static com.oik.api.utils.redis.RedisConstants.CACHE_LOCK;
 
 
 @Component
@@ -71,82 +72,82 @@ public class CacheClient {
      * @param <R> 返回结果
      * @param <ID> 参数
      */
-    public <R, ID> R queryWithPassThrough(
-            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit timeUnit
-    ) throws InterruptedException {
-        String key = keyPrefix + id;
-        // redis 查取缓存
-        String json = stringRedisTemplate.opsForValue().get(key);
-        log.info(json);
-        // 判断缓存是否命中
-        if (StrUtil.isNotBlank(json)) {
-            return JSON.parseObject(json, type);
-//            return JSONUtil.toBean(json, type);
-        }
-        //判断是否是空值
-        if (json != null) {
-            return null;
-        }
-        String lockKey = LOCK_SHOP_KEY + id;
-        boolean lock = tryLock(lockKey);
-        if (lock) {
-            EXECUTOR_SERVICE.submit(() -> {
-                try {
-                    R r = dbFallback.apply(id);
-                    if (r == null) {
-                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
-                    }
-                    this.set(key, r, time, timeUnit);
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                } finally {
-                    unLock(lockKey);
-                }
-            });
-        } else {
-            Thread.sleep(100L);
-        }
-        return queryWithPassThrough(keyPrefix, id, type, dbFallback, time, timeUnit);
-    }
+//    public <R, ID> R queryWithPassThrough(
+//            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit timeUnit
+//    ) throws InterruptedException {
+//        String key = keyPrefix + id;
+//        // redis 查取缓存
+//        String json = stringRedisTemplate.opsForValue().get(key);
+//        log.info(json);
+//        // 判断缓存是否命中
+//        if (StrUtil.isNotBlank(json)) {
+//            return JSON.parseObject(json, type);
+////            return JSONUtil.toBean(json, type);
+//        }
+//        //判断是否是空值
+//        if (json != null) {
+//            return null;
+//        }
+//        String lockKey = LOCK_SHOP_KEY + id;
+//        boolean lock = tryLock(lockKey);
+//        if (lock) {
+//            EXECUTOR_SERVICE.submit(() -> {
+//                try {
+//                    R r = dbFallback.apply(id);
+//                    if (r == null) {
+//                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
+//                    }
+//                    this.set(key, r, time, timeUnit);
+//                } catch (Exception e) {
+//                    log.error(e.getMessage());
+//                } finally {
+//                    unLock(lockKey);
+//                }
+//            });
+//        } else {
+//            Thread.sleep(100L);
+//        }
+//        return queryWithPassThrough(keyPrefix, id, type, dbFallback, time, timeUnit);
+//    }
 
 
-    public <R, ID> List<R> queryWithPassThroughList(
-            String keyPrefix, ID id, Class<R> type, Function<ID, List<R>> dbFallback, Long time, TimeUnit timeUnit
-    ) throws InterruptedException {
-        String key = keyPrefix + id;
-        // redis 查取缓存
-        String json = stringRedisTemplate.opsForValue().get(key);
-        log.info(json);
-        // 判断缓存是否命中
-        if (StrUtil.isNotBlank(json)) {
-            return JSON.parseArray(json, type);
-//            return JSONUtil.toBean(json, type);
-        }
-        //判断是否是空值
-        if (json != null) {
-            return null;
-        }
-        String lockKey = LOCK_SHOP_KEY + id;
-        boolean lock = tryLock(lockKey);
-        if (lock) {
-            EXECUTOR_SERVICE.submit(() -> {
-                try {
-                    List<R> r = dbFallback.apply(id);
-                    if (r == null) {
-                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
-                    }
-                    this.set(key, r, time, timeUnit);
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                } finally {
-                    unLock(lockKey);
-                }
-            });
-        } else {
-            Thread.sleep(100L);
-        }
-        return queryWithPassThroughList(keyPrefix, id, type, dbFallback, time, timeUnit);
-    }
+//    public <R, ID> List<R> queryWithPassThroughList(
+//            String keyPrefix, ID id, Class<R> type, Function<ID, List<R>> dbFallback, Long time, TimeUnit timeUnit
+//    ) throws InterruptedException {
+//        String key = keyPrefix + id;
+//        // redis 查取缓存
+//        String json = stringRedisTemplate.opsForValue().get(key);
+//        log.info(json);
+//        // 判断缓存是否命中
+//        if (StrUtil.isNotBlank(json)) {
+//            return JSON.parseArray(json, type);
+////            return JSONUtil.toBean(json, type);
+//        }
+//        //判断是否是空值
+//        if (json != null) {
+//            return null;
+//        }
+//        String lockKey = LOCK_SHOP_KEY + id;
+//        boolean lock = tryLock(lockKey);
+//        if (lock) {
+//            EXECUTOR_SERVICE.submit(() -> {
+//                try {
+//                    List<R> r = dbFallback.apply(id);
+//                    if (r == null) {
+//                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
+//                    }
+//                    this.set(key, r, time, timeUnit);
+//                } catch (Exception e) {
+//                    log.error(e.getMessage());
+//                } finally {
+//                    unLock(lockKey);
+//                }
+//            });
+//        } else {
+//            Thread.sleep(100L);
+//        }
+//        return queryWithPassThroughList(keyPrefix, id, type, dbFallback, time, timeUnit);
+//    }
 
     //线程池
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(20);
@@ -163,40 +164,40 @@ public class CacheClient {
      * @param <R> 返回结果
      * @param <ID> 参数
      */
-    public <R,ID> R queryWithLogicalExpire(
-            String keyPrefix,ID id,Class<R> type, Function<ID,R> dbFallback, Long time, TimeUnit timeUnit
-    ) {
-        String key = keyPrefix + id;
-        // redis 查取缓存
-        String shopJson = stringRedisTemplate.opsForValue().get(key);
-
-        if (StrUtil.isBlank(shopJson)) {
-            return null;
-        }
-        RedisData redisData = JSONUtil.toBean(shopJson, RedisData.class);
-        JSONObject jsonObject = (JSONObject) redisData.getData();
-        R r = JSONUtil.toBean(jsonObject, type);
-        LocalDateTime expireTime = redisData.getExpireTime();
-        if (expireTime.isAfter(LocalDateTime.now())) {
-            return r;
-        }
-        String lockKey = LOCK_SHOP_KEY + id;
-        boolean lock = tryLock(lockKey);
-        if (lock) {
-            EXECUTOR_SERVICE.submit(()->{
-                try {
-                    R r1 = dbFallback.apply(id);
-                    this.setWithLogicalExpire(key,r1,time,timeUnit);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    unLock(lockKey);
-                }
-            });
-
-        }
-        return r;
-    }
+//    public <R,ID> R queryWithLogicalExpire(
+//            String keyPrefix,ID id,Class<R> type, Function<ID,R> dbFallback, Long time, TimeUnit timeUnit
+//    ) {
+//        String key = keyPrefix + id;
+//        // redis 查取缓存
+//        String shopJson = stringRedisTemplate.opsForValue().get(key);
+//
+//        if (StrUtil.isBlank(shopJson)) {
+//            return null;
+//        }
+//        RedisData redisData = JSONUtil.toBean(shopJson, RedisData.class);
+//        JSONObject jsonObject = (JSONObject) redisData.getData();
+//        R r = JSONUtil.toBean(jsonObject, type);
+//        LocalDateTime expireTime = redisData.getExpireTime();
+//        if (expireTime.isAfter(LocalDateTime.now())) {
+//            return r;
+//        }
+//        String lockKey = LOCK_SHOP_KEY + id;
+//        boolean lock = tryLock(lockKey);
+//        if (lock) {
+//            EXECUTOR_SERVICE.submit(()->{
+//                try {
+//                    R r1 = dbFallback.apply(id);
+//                    this.setWithLogicalExpire(key,r1,time,timeUnit);
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                } finally {
+//                    unLock(lockKey);
+//                }
+//            });
+//
+//        }
+//        return r;
+//    }
 
     /**
      * 获取互斥锁
@@ -265,5 +266,50 @@ public class CacheClient {
         return stringRedisTemplate.delete(keys);
     }
 
+    public <T,R> T getValue(String prefix,String key,R r, Class<T> type,Function<R,T> dbFallback, Long time, TimeUnit timeUnit){
+        String value = getValue(prefix, key);
+        if (StringUtils.isNotEmpty(value)){
+            return JSON.parseObject(value, type);
+        }else{
+            try {
+                if(tryLock(CACHE_LOCK + key)){
+                    T t = dbFallback.apply(r);
+                    set(prefix+key,JSON.toJSONString(t),time,timeUnit);
+                    return t;
+                }else{
+                    Thread.sleep(200);
+                   return getValue(prefix,key,r,type,dbFallback,time,timeUnit);
+                }
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }finally {
+                unLock(CACHE_LOCK+key);
+            }
+        }
+        return null;
+    }
+
+    public <T,R> T getValue(String prefix,String key,R r,Class<T> type,Function<R,T> dbFallback){
+        String value = getValue(prefix, key);
+        if (StringUtils.isNotEmpty(value)){
+            return JSON.parseObject(value, type);
+        }else{
+            try {
+                if(tryLock(CACHE_LOCK + key)){
+                    T t = dbFallback.apply(r);
+                    set(prefix+key,JSON.toJSONString(t));
+                    return t;
+                }else{
+                    Thread.sleep(200);
+                    return getValue(prefix,key,r,type,dbFallback);
+                }
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }finally {
+                unLock(CACHE_LOCK+key);
+            }
+        }
+        return null;
+    }
 
 }

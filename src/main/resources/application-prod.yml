@@ -28,7 +28,7 @@ mybatis-plus:
     # 自动驼峰命名
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath:/com/oik/dao/**/*.xml
+  mapper-locations: classpath:/com/oik/api/mapper/xml/*.xml
 
 mybatis-plus-join:
   #是否打印 mybatis plus join banner 默认true

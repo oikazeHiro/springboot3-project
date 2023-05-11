@@ -28,7 +28,7 @@ public class mybatisPlusGenerate {
     /**
      * xml路径
      */
-    private static final String XML_PATH = PARENT_DIR +SRC_MAIN_JAVA+"mapper/xml";
+    private static final String XML_PATH = PARENT_DIR +"/src/main/resources/xml";
     /**
      * entity路径
      */
@@ -50,8 +50,10 @@ public class mybatisPlusGenerate {
      */
     private static final String CONTROLLER_PATH = PARENT_DIR +SRC_MAIN_JAVA+"/controller";
 
-    static String URL = "jdbc:mysql://101.42.224.188:13306/program?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true";
-    static String USERNAME = "root";
+//    static String URL = "jdbc:mysql://101.42.224.188:13306/program?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true";
+    static String URL = "jdbc:postgresql://localhost:5432/program";
+//    static String USERNAME = "root";
+    static String USERNAME = "postgres";
     static String PASSWORD = "root";
     static String AUTHOR = "oik";           //作者
 
@@ -62,7 +64,7 @@ public class mybatisPlusGenerate {
 
     //反向生成的表
     static String[] tables = new String[]{
-            "sys_user",
+            "sys_dict",
     };
 
     public static void main(String[] args) {

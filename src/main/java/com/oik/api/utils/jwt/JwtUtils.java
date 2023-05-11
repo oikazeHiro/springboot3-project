@@ -18,6 +18,22 @@ import java.util.UUID;
 public class JwtUtils {
 
     private static final String JWT_PAYLOAD_USER_KEY = "user";
+    /**
+     * 私钥加密token
+     *
+     * @param userInfo   载荷中的数据
+     * @param privateKey 私钥
+     * @param expire     过期时间，单位分钟
+     * @return JWT
+     */
+    public static String generateTokenExpireInDay(Object userInfo, PrivateKey privateKey, int expire) {
+        return Jwts.builder()
+                .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
+                .setId(createJTI())
+                .setExpiration(DateTime.now().plusDays(expire).toDate())
+                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .compact();
+    }
 
     /**
      * 私钥加密token
