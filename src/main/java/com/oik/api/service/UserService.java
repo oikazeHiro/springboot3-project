@@ -15,4 +15,5 @@ public interface UserService extends MPJJoinService<User> {
 
     String test();
 
+    void saveUser(User user);
 }

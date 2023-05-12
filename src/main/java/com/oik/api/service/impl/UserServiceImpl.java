@@ -5,6 +5,7 @@ import com.oik.api.entity.User;
 import com.oik.api.mapper.UserMapper;
 import com.oik.api.service.UserService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,5 +23,13 @@ public class UserServiceImpl extends MPJBaseServiceImpl<UserMapper, User> implem
     public String test() {
 
         return "null";
+    }
+
+    @Override
+    public void saveUser(User user) {
+        if(StringUtils.isEmpty(user.getPassword())){
+
+        }
+        this.save(user);
     }
 }
