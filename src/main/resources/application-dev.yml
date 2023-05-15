@@ -45,9 +45,5 @@ rsa:
     pubKeyPath: src/main/resources/auth_key/id_key_rsa.pub
     priKeyPath: src/main/resources/auth_key/id_key_rsa
 
-swagger:
-  enable: true
-  application-name: ${spring.application.name}
-  application-version: 1.0
-  application-description: 略
-  try-host: http://localhost:${server.port}
+
+

@@ -3,3 +3,5 @@ auth:
     - /swagger/**
     - /user/login
     - /test/**
+    - /swagger-ui/**
+    - /swagger-ui.html
