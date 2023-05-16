@@ -6,7 +6,7 @@ import com.oik.api.service.MenuService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import java.util.Set;
 public class MenuServiceImpl extends MPJBaseServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Override
-    public Set<String> getParams(String userId) {
+    public List<String> getParams(String userId) {
         return null;
     }
 }

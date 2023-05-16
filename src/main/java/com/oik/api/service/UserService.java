@@ -2,6 +2,7 @@ package com.oik.api.service;
 
 import com.oik.api.entity.User;
 import com.github.yulichang.base.service.MPJJoinService;
+import com.oik.api.utils.dto.LoginDto;
 
 /**
  * <p>
@@ -16,4 +17,10 @@ public interface UserService extends MPJJoinService<User> {
     String test();
 
     void saveUser(User user);
+
+    User login(LoginDto loginDto);
+
+    User loginByPhone(LoginDto loginDto);
+
+    User loginByEmail(LoginDto loginDto);
 }

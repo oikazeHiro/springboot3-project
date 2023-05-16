@@ -25,18 +25,18 @@ public class UserRole implements Serializable {
     /**
      * ID
      */
-    @TableId("ID")
+    @TableId("id")
     private String id;
 
     /**
      * USER_ID
      */
-    @TableField("USER_ID")
+    @TableField("user_id")
     private String userId;
 
     /**
      * ROLE_ID
      */
-    @TableField("ROLE_ID")
+    @TableField("role_id")
     private String roleId;
 }

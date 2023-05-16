@@ -6,4 +6,5 @@ public class RedisConstants {
     public final static String CACHE_USER_ROLE = "oik:user:role:";
     public final static String CACHE_USER_PARAMS = "oik:user:params:";
     public final static String CACHE_LOCK = "oik:lock:";
+    public final static String CACHE_CAPTCHA = "oik:captcha";
 }

@@ -28,48 +28,48 @@ public class Role implements Serializable {
     /**
      * ID
      */
-    @TableId("ID")
+    @TableId("id")
     private String id;
 
     /**
      * 角色
      */
-    @TableField("ROLE_CODE")
+    @TableField("role_code")
     private String roleCode;
 
     /**
      * 描述
      */
-    @TableField("ROLE_NAME")
+    @TableField("role_name")
     private String roleName;
 
     /**
      * 备注
      */
-    @TableField("REMARK")
+    @TableField("remark")
     private String remark;
 
     /**
      * 创建人
      */
-    @TableField("CREATED_BY")
+    @TableField("created_by")
     private String createdBy;
 
     /**
      * 创建时间
      */
-    @TableField("CREATED_TIME")
+    @TableField("created_time")
     private LocalDateTime createdTime;
 
     /**
      * 更新人
      */
-    @TableField("UPDATED_BY")
+    @TableField("updated_by")
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    @TableField("UPDATED_TIME")
+    @TableField("updated_time")
     private LocalDateTime updatedTime;
 }

@@ -26,90 +26,90 @@ public class Menu implements Serializable {
     /**
      * ID
      */
-    @TableId("ID")
+    @TableId("id")
     private String id;
 
     /**
      * 父id
      */
-    @TableField("PARENT_ID")
+    @TableField("parent_id")
     private String parentId;
 
     /**
-     * 类型;0菜单1分类2路由3按钮
+     * 类型;0菜单1按钮
      */
-    @TableField("`TYPE`")
+    @TableField("type")
     private Short type;
 
     /**
      * 等级
      */
-    @TableField("`LEVEL`")
+    @TableField("level")
     private Short level;
 
     /**
      * 名称
      */
-    @TableField("`NAME`")
+    @TableField("name")
     private String name;
 
     /**
      * 路由
      */
-    @TableField("`PATH`")
+    @TableField("path")
     private String path;
 
     /**
      * 组件路径
      */
-    @TableField("`COMPONENT`")
+    @TableField("component")
     private String component;
 
     /**
      * 权限
      */
-    @TableField("PERMS")
+    @TableField("perms")
     private String perms;
 
     /**
      * 图标
      */
-    @TableField("ICON")
+    @TableField("icon")
     private String icon;
 
     /**
      * 排序
      */
-    @TableField("ORDER_NUM")
+    @TableField("order_num")
     private Integer orderNum;
 
     /**
      * 状态;1 true 0 false
      */
-    @TableField("`STATUS`")
+    @TableField("status")
     private Short status;
 
     /**
      * 创建人
      */
-    @TableField("CREATED_BY")
+    @TableField("created_by")
     private String createdBy;
 
     /**
      * 创建时间
      */
-    @TableField("CREATED_TIME")
+    @TableField("created_time")
     private LocalDateTime createdTime;
 
     /**
      * 更新人
      */
-    @TableField("UPDATED_BY")
+    @TableField("updated_by")
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    @TableField("UPDATED_TIME")
+    @TableField("updated_time")
     private LocalDateTime updatedTime;
 }

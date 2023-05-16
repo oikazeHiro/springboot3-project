@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
+import com.baomidou.mybatisplus.generator.keywords.PostgreSqlKeyWordsHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -70,7 +71,7 @@ public class mybatisPlusGenerate {
     public static void main(String[] args) {
         //基本配置
         DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(URL, USERNAME, PASSWORD)
-                .keyWordsHandler(new MySqlKeyWordsHandler())
+                .keyWordsHandler(new PostgreSqlKeyWordsHandler())
                 .typeConvert(new MySqlTypeConvert() {
                     @Override
                     public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {

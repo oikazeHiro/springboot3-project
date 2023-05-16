@@ -1,7 +1,9 @@
 auth:
   ignore_urls:
     - /swagger/**
-    - /user/login
+    - /user/login/account
+    - /user/login/phone
+    - /user/login/email
     - /test/**
     - /swagger-ui/**
     - /swagger-ui.html

@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -60,144 +61,8 @@ public class CacheClient {
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(redisData));
     }
 
-    /**
-     * 解决缓存穿透
-     * @param keyPrefix key前缀
-     * @param id id
-     * @param type class
-     * @param dbFallback 函数试方法
-     * @param time time
-     * @param timeUnit 时间单位
-     * @return 结果
-     * @param <R> 返回结果
-     * @param <ID> 参数
-     */
-//    public <R, ID> R queryWithPassThrough(
-//            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit timeUnit
-//    ) throws InterruptedException {
-//        String key = keyPrefix + id;
-//        // redis 查取缓存
-//        String json = stringRedisTemplate.opsForValue().get(key);
-//        log.info(json);
-//        // 判断缓存是否命中
-//        if (StrUtil.isNotBlank(json)) {
-//            return JSON.parseObject(json, type);
-////            return JSONUtil.toBean(json, type);
-//        }
-//        //判断是否是空值
-//        if (json != null) {
-//            return null;
-//        }
-//        String lockKey = LOCK_SHOP_KEY + id;
-//        boolean lock = tryLock(lockKey);
-//        if (lock) {
-//            EXECUTOR_SERVICE.submit(() -> {
-//                try {
-//                    R r = dbFallback.apply(id);
-//                    if (r == null) {
-//                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
-//                    }
-//                    this.set(key, r, time, timeUnit);
-//                } catch (Exception e) {
-//                    log.error(e.getMessage());
-//                } finally {
-//                    unLock(lockKey);
-//                }
-//            });
-//        } else {
-//            Thread.sleep(100L);
-//        }
-//        return queryWithPassThrough(keyPrefix, id, type, dbFallback, time, timeUnit);
-//    }
-
-
-//    public <R, ID> List<R> queryWithPassThroughList(
-//            String keyPrefix, ID id, Class<R> type, Function<ID, List<R>> dbFallback, Long time, TimeUnit timeUnit
-//    ) throws InterruptedException {
-//        String key = keyPrefix + id;
-//        // redis 查取缓存
-//        String json = stringRedisTemplate.opsForValue().get(key);
-//        log.info(json);
-//        // 判断缓存是否命中
-//        if (StrUtil.isNotBlank(json)) {
-//            return JSON.parseArray(json, type);
-////            return JSONUtil.toBean(json, type);
-//        }
-//        //判断是否是空值
-//        if (json != null) {
-//            return null;
-//        }
-//        String lockKey = LOCK_SHOP_KEY + id;
-//        boolean lock = tryLock(lockKey);
-//        if (lock) {
-//            EXECUTOR_SERVICE.submit(() -> {
-//                try {
-//                    List<R> r = dbFallback.apply(id);
-//                    if (r == null) {
-//                        stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
-//                    }
-//                    this.set(key, r, time, timeUnit);
-//                } catch (Exception e) {
-//                    log.error(e.getMessage());
-//                } finally {
-//                    unLock(lockKey);
-//                }
-//            });
-//        } else {
-//            Thread.sleep(100L);
-//        }
-//        return queryWithPassThroughList(keyPrefix, id, type, dbFallback, time, timeUnit);
-//    }
-
     //线程池
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(20);
-
-    /**
-     * 解决热点key缓存击穿问题
-     * @param keyPrefix key前缀
-     * @param id id
-     * @param type class
-     * @param dbFallback 函数试方法
-     * @param time time
-     * @param timeUnit 时间单位
-     * @return 结果
-     * @param <R> 返回结果
-     * @param <ID> 参数
-     */
-//    public <R,ID> R queryWithLogicalExpire(
-//            String keyPrefix,ID id,Class<R> type, Function<ID,R> dbFallback, Long time, TimeUnit timeUnit
-//    ) {
-//        String key = keyPrefix + id;
-//        // redis 查取缓存
-//        String shopJson = stringRedisTemplate.opsForValue().get(key);
-//
-//        if (StrUtil.isBlank(shopJson)) {
-//            return null;
-//        }
-//        RedisData redisData = JSONUtil.toBean(shopJson, RedisData.class);
-//        JSONObject jsonObject = (JSONObject) redisData.getData();
-//        R r = JSONUtil.toBean(jsonObject, type);
-//        LocalDateTime expireTime = redisData.getExpireTime();
-//        if (expireTime.isAfter(LocalDateTime.now())) {
-//            return r;
-//        }
-//        String lockKey = LOCK_SHOP_KEY + id;
-//        boolean lock = tryLock(lockKey);
-//        if (lock) {
-//            EXECUTOR_SERVICE.submit(()->{
-//                try {
-//                    R r1 = dbFallback.apply(id);
-//                    this.setWithLogicalExpire(key,r1,time,timeUnit);
-//                } catch (Exception e) {
-//                    throw new RuntimeException(e);
-//                } finally {
-//                    unLock(lockKey);
-//                }
-//            });
-//
-//        }
-//        return r;
-//    }
 
     /**
      * 获取互斥锁
@@ -220,32 +85,6 @@ public class CacheClient {
     public String getValue(String keyPrefix,String key){
          return stringRedisTemplate.opsForValue().get(keyPrefix + key);
     }
-
-    /**
-     * 如果缓存没有数据，则去查数据库
-     * @param cacheSelector
-     * @param databaseSelector
-     * @return
-     * @param <T>
-     */
-//    public static <T> T selectCacheByTemplate(CacheSelector<T> cacheSelector, Supplier<T> databaseSelector) {
-//        try {
-//            log.debug("query data from redis ······");
-//            // 先查 Redis缓存
-//            T t = cacheSelector.select();
-//            if (t == null) {
-//                // 没有记录再查询数据库
-//                return databaseSelector.get();
-//            } else {
-//                return t;
-//            }
-//        } catch (Exception e) {
-//            // 缓存查询出错，则去数据库查询
-//            log.error("redis error：", e);
-//            log.debug("query data from database ······");
-//            return databaseSelector.get();
-//        }
-//    }
 
     /**
      *根据key删除redis数据
@@ -302,6 +141,58 @@ public class CacheClient {
                 }else{
                     Thread.sleep(200);
                     return getValue(prefix,key,r,type,dbFallback);
+                }
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }finally {
+                unLock(CACHE_LOCK+key);
+            }
+        }
+        return null;
+    }
+
+    public <T,R> List<T> getListValue(String prefix,String key,R r,Class<T> type,Function<R,List<T>> dbFallback, Long time, TimeUnit timeUnit){
+        String value = getValue(prefix, key);
+        if (StringUtils.isNotEmpty(value)){
+            return JSON.parseArray(value, type);
+        }else{
+            try {
+                if(tryLock(CACHE_LOCK + key)){
+                    List<T>  t = dbFallback.apply(r);
+                    if (t == null){
+                        t = new ArrayList<>();
+                    }
+                    set(prefix+key,JSON.toJSONString(t));
+                    return t;
+                }else{
+                    Thread.sleep(200);
+                    return getListValue(prefix,key,r,type,dbFallback,time,timeUnit);
+                }
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }finally {
+                unLock(CACHE_LOCK+key);
+            }
+        }
+        return null;
+    }
+
+    public <T,R> List<T> getListValue(String prefix,String key,R r,Class<T> type,Function<R,List<T>> dbFallback){
+        String value = getValue(prefix, key);
+        if (StringUtils.isNotEmpty(value)){
+            return JSON.parseArray(value, type);
+        }else{
+            try {
+                if(tryLock(CACHE_LOCK + key)){
+                    List<T>  t = dbFallback.apply(r);
+                    if (t == null){
+                        t = new ArrayList<>();
+                    }
+                    set(prefix+key,JSON.toJSONString(t));
+                    return t;
+                }else{
+                    Thread.sleep(200);
+                    return getListValue(prefix,key,r,type,dbFallback);
                 }
             }catch (Exception e){
                 log.error(e.getMessage());

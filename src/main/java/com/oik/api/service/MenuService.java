@@ -3,6 +3,7 @@ package com.oik.api.service;
 import com.oik.api.entity.Menu;
 import com.github.yulichang.base.service.MPJJoinService;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,5 +17,5 @@ import java.util.Set;
 public interface MenuService extends MPJJoinService<Menu> {
 
 
-    Set<String> getParams(String userId);
+    List<String> getParams(String userId);
 }

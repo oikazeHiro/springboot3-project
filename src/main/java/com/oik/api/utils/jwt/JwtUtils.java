@@ -23,7 +23,7 @@ public class JwtUtils {
      *
      * @param userInfo   载荷中的数据
      * @param privateKey 私钥
-     * @param expire     过期时间，单位分钟
+     * @param expire     过期时间，单位天
      * @return JWT
      */
     public static String generateTokenExpireInDay(Object userInfo, PrivateKey privateKey, int expire) {

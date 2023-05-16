@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import lombok.experimental.Accessors;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -26,100 +30,105 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 @TableName("sys_user")
+@Accessors(chain = true)
 public class User implements Serializable, UserDetails {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
-    @TableId(value = "ID",type = IdType.ASSIGN_UUID)
+    @TableId("id")
     private String id;
 
     /**
      * 用户名
      */
-    @TableField("USERNAME")
+    @TableField("username")
     private String username;
 
     /**
      * 密码
      */
     @JsonIgnore
-    @TableField("`PASSWORD`")
+    @TableField("password")
     private String password;
 
     /**
      * 部门id
      */
-    @TableField("DEPT_ID")
+    @TableField("dept_id")
     private String deptId;
 
     /**
      * 邮箱
      */
-    @TableField("EMAIL")
+    @TableField("email")
     private String email;
 
     /**
      * 电话
      */
-    @TableField("MOBILE")
+    @TableField("mobile")
     private String mobile;
 
     /**
      * 状态;(1)true (0)false
      */
-    @TableField("`STATUS`")
-    private Byte status = 0;
+    @TableField("status")
+    private Short status;
 
     /**
      * 最后登录时间
      */
-    @TableField("LAST_LOGIN_TIME")
+    @TableField("last_login_time")
     private LocalDateTime lastLoginTime;
 
     /**
      * 性别;(0)女(1)男
      */
-    @TableField("SEX")
-    private Byte sex;
+    @TableField("sex")
+    private Short sex;
 
     /**
      * 描述
      */
-    @TableField("`DESCRIPTION`")
+    @TableField("description")
     private String description;
 
     /**
      * 头像
      */
-    @TableField("AVATAR")
+    @TableField("avatar")
     private String avatar;
 
     /**
      * 创建人
      */
-    @TableField("CREATED_BY")
+    @TableField("created_by")
     private String createdBy;
 
     /**
      * 创建时间
      */
-    @TableField("CREATED_TIME")
+    @TableField("created_time")
     private LocalDateTime createdTime;
 
     /**
      * 更新人
      */
-    @TableField("UPDATED_BY")
+    @TableField("updated_by")
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    @TableField("UPDATED_TIME")
+    @TableField("updated_time")
     private LocalDateTime updatedTime;
+
+    @TableField(exist = false)
+    private String token;
 
     @TableField(exist = false)
     private List<Role> sysRole = new ArrayList<>();

@@ -14,4 +14,5 @@ public class LoginDto {
     private String password;
     private String code;
     private String email;
+    private String phone;
 }

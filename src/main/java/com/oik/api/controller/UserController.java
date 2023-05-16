@@ -2,6 +2,7 @@ package com.oik.api.controller;
 
 import com.oik.api.entity.User;
 import com.oik.api.service.UserService;
+import com.oik.api.utils.dto.LoginDto;
 import com.oik.api.utils.result.Result;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -29,4 +30,20 @@ public class UserController {
         userService.saveUser(user);
         return Result.ok();
     }
+
+    @PostMapping("/login/account")
+    public Result<User> loginByAccount(@RequestBody LoginDto loginDto){
+        return Result.ok(userService.login(loginDto));
+    }
+
+    @PostMapping("/login/phone")
+    public Result<User> loginByPhone(@RequestBody LoginDto loginDto){
+        return Result.ok(userService.loginByPhone(loginDto));
+    }
+
+    @PostMapping("/login/email")
+    public Result<User> loginByEmail(@RequestBody LoginDto loginDto){
+        return Result.ok(userService.loginByEmail(loginDto));
+    }
+
 }

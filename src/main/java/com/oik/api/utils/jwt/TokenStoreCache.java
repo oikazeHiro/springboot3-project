@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.oik.api.utils.redis.RedisConstants.*;
 
@@ -44,13 +45,13 @@ public class TokenStoreCache {
     }
 
     public User getUser(String token){
-        Payload<User> payload = JwtUtils.getInfoFromToken(token, rsaKeyProperties.getPublicKey(), User.class);
-        User userInfo = payload.getUserInfo();
-        User user = cacheClient.getValue(CACHE_USER_INFO, userInfo.getId(), userInfo.getId(), User.class, userService::getById);
-        List<Role> roles = (List<Role>) cacheClient.getValue(CACHE_USER_INFO, userInfo.getId(), userInfo.getId(), List.class, roleService::getByUserId);
-        Set<String> params =(Set<String>) cacheClient.getValue(CACHE_USER_INFO, userInfo.getId(), userInfo.getId(), Set.class, menuService::getParams);
+        Payload<String> payload = JwtUtils.getInfoFromToken(token, rsaKeyProperties.getPublicKey(), String.class);
+        String userId = payload.getUserInfo();
+        User user = cacheClient.getValue(CACHE_USER_INFO, userId, userId, User.class, userService::getById);
+        List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE,userId, userId, Role.class, roleService::getByUserId);
+        List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
         user.setSysRole(roles);
-        user.setParams(params);
+        user.setParams(new HashSet<>(params));
         UserHolder.saveUser(user);
         return user;
     }

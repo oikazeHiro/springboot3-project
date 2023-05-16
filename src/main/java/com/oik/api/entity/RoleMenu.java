@@ -25,18 +25,18 @@ public class RoleMenu implements Serializable {
     /**
      * ID
      */
-    @TableId("ID")
+    @TableId("id")
     private String id;
 
     /**
      * ROLE_ID
      */
-    @TableField("ROLE_ID")
+    @TableField("role_id")
     private String roleId;
 
     /**
      * MENU_ID
      */
-    @TableField("MENU_ID")
+    @TableField("menu_id")
     private String menuId;
 }

@@ -26,10 +26,10 @@ public class Dict implements Serializable {
     @TableId("id")
     private String id;
 
-    @TableField("`key`")
+    @TableField("key")
     private String key;
 
-    @TableField("`value`")
+    @TableField("value")
     private String value;
 
     @TableField("sort")
