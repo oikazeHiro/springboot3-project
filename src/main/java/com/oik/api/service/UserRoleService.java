@@ -13,4 +13,5 @@ import com.github.yulichang.base.service.MPJJoinService;
  */
 public interface UserRoleService extends MPJJoinService<UserRole> {
 
+    void saveOne(UserRole userRole);
 }

@@ -1,8 +1,7 @@
 package com.oik.api.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -28,7 +27,7 @@ public class Role implements Serializable {
     /**
      * ID
      */
-    @TableId("id")
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
@@ -52,24 +51,24 @@ public class Role implements Serializable {
     /**
      * 创建人
      */
-    @TableField("created_by")
+    @TableField(value = "created_by",fill = FieldFill.INSERT)
     private String createdBy;
 
     /**
      * 创建时间
      */
-    @TableField("created_time")
+    @TableField(value = "created_time",fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
     /**
      * 更新人
      */
-    @TableField("updated_by")
+    @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    @TableField("updated_time")
+    @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
 }

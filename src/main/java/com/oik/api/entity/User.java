@@ -1,9 +1,6 @@
 package com.oik.api.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,7 +36,7 @@ public class User implements Serializable, UserDetails {
     /**
      * ID
      */
-    @TableId("id")
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
@@ -106,25 +103,25 @@ public class User implements Serializable, UserDetails {
     /**
      * 创建人
      */
-    @TableField("created_by")
+    @TableField(value = "created_by",fill = FieldFill.INSERT)
     private String createdBy;
 
     /**
      * 创建时间
      */
-    @TableField("created_time")
+    @TableField(value = "created_time",fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
     /**
      * 更新人
      */
-    @TableField("updated_by")
+    @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy;
 
     /**
      * 更新时间
      */
-    @TableField("updated_time")
+    @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
 
     @TableField(exist = false)

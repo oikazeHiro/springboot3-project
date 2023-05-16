@@ -1,6 +1,8 @@
 package com.oik.api.service.impl;
 
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.oik.api.entity.Role;
+import com.oik.api.entity.UserRole;
 import com.oik.api.mapper.RoleMapper;
 import com.oik.api.service.RoleService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
@@ -22,12 +24,10 @@ public class RoleServiceImpl extends MPJBaseServiceImpl<RoleMapper, Role> implem
 
     @Override
     public List<Role> getByUserId(String userId) {
-        List<Role> list = new ArrayList<>();
-        list.add(new Role()
-                .setId("test")
-                .setRoleCode("code")
-                .setRoleName("name")
-                .setRemark("rmk"));
-        return list;
+        MPJLambdaWrapper<Role> wrapper = new MPJLambdaWrapper<>();
+        wrapper.selectAll(Role.class)
+                .leftJoin(UserRole.class,UserRole::getRoleId,Role::getId)
+                .eq(UserRole::getUserId,userId);
+        return selectJoinList(Role.class, wrapper);
     }
 }

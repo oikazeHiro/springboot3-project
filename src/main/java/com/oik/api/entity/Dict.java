@@ -1,8 +1,7 @@
 package com.oik.api.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -23,7 +22,7 @@ public class Dict implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("id")
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     @TableField("key")
@@ -38,15 +37,15 @@ public class Dict implements Serializable {
     @TableField("parent")
     private String parent;
 
-    @TableField("created_by")
+    @TableField(value = "created_by",fill = FieldFill.INSERT)
     private String createdBy;
 
-    @TableField("created_time")
+    @TableField(value = "created_time",fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
-    @TableField("updated_by")
+    @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy;
 
-    @TableField("updated_time")
+    @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
 }

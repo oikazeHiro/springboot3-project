@@ -1,7 +1,10 @@
 package com.oik.api.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.oik.api.entity.Menu;
+import com.oik.api.service.MenuService;
+import com.oik.api.utils.result.Result;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -14,5 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
+
+    @Resource
+    private MenuService menuService;
+
+    @PostMapping
+    public Result<Menu> save(@RequestBody Menu menu){
+        menuService.save(menu);
+        return Result.ok(menu);
+    }
+
+    @PutMapping
+    public Result<Menu> update(@RequestBody Menu menu){
+        menuService.updateById(menu);
+        return Result.ok(menu);
+    }
 
 }

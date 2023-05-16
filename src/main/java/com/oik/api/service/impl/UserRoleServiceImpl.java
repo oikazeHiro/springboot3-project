@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRoleServiceImpl extends MPJBaseServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
 
+    @Override
+    public void saveOne(UserRole userRole) {
+        save(userRole);
+    }
 }

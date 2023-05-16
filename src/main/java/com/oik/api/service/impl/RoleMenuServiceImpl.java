@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleMenuServiceImpl extends MPJBaseServiceImpl<RoleMenuMapper, RoleMenu> implements RoleMenuService {
 
+    @Override
+    public void saveOne(RoleMenu roleMenu) {
+        save(roleMenu);
+    }
 }

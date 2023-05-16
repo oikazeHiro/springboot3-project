@@ -1,7 +1,10 @@
 package com.oik.api.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.oik.api.entity.Role;
+import com.oik.api.service.RoleService;
+import com.oik.api.utils.result.Result;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -15,4 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/role")
 public class RoleController {
 
+    @Resource
+    private RoleService roleService;
+
+    @PostMapping
+    public Result<Role> save(@RequestBody Role role){
+        roleService.save(role);
+        return Result.ok(role);
+    }
+
+    @PutMapping
+    public Result<Role> update(@RequestBody Role role){
+        roleService.updateById(role);
+        return Result.ok(role);
+    }
 }
