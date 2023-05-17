@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,4 +51,11 @@ public class Dict implements Serializable {
 
     @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
+
+    @TableField(value = "states")
+    private Integer states;
+
+    // Children
+    @TableField(exist = false)
+    private List<Dict> children = new ArrayList<>();
 }

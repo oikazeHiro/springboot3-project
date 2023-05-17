@@ -12,18 +12,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.oik.api.utils.redis.RedisConstants.CACHE_USER_INFO;
 import static com.oik.api.utils.redis.RedisConstants.CACHE_USER_ROLE;
 
 @SpringBootTest
 class OikApplicationTests {
-
     @Test
     void contextLoads() {
+
     }
 
 }

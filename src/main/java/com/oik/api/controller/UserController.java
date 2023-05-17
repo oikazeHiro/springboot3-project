@@ -5,6 +5,7 @@ import com.oik.api.service.UserService;
 import com.oik.api.utils.dto.LoginDto;
 import com.oik.api.utils.result.Result;
 import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,6 +27,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('sys:user:save')")
     public Result<String> save(@RequestBody User user){
         userService.saveUser(user);
         return Result.ok();

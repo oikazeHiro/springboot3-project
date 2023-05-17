@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,13 +31,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Accessors(chain = true)
 public class User implements Serializable, UserDetails {
 
+
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
-    @TableId(value = "id",type = IdType.ASSIGN_UUID)
+    @TableId(value = "id",type = IdType.ASSIGN_ID)
     private String id;
 
     /**
@@ -48,7 +50,6 @@ public class User implements Serializable, UserDetails {
     /**
      * 密码
      */
-    @JsonIgnore
     @TableField("password")
     private String password;
 
@@ -123,6 +124,17 @@ public class User implements Serializable, UserDetails {
      */
     @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
 
     @TableField(exist = false)
     private String token;
