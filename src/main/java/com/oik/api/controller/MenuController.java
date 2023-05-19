@@ -2,9 +2,12 @@ package com.oik.api.controller;
 
 import com.oik.api.entity.Menu;
 import com.oik.api.service.MenuService;
+import com.oik.api.utils.redis.UserHolder;
 import com.oik.api.utils.result.Result;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,14 +26,20 @@ public class MenuController {
 
     @PostMapping
     public Result<Menu> save(@RequestBody Menu menu){
-        menuService.save(menu);
+        menuService.saveOne(menu);
         return Result.ok(menu);
     }
 
     @PutMapping
     public Result<Menu> update(@RequestBody Menu menu){
-        menuService.updateById(menu);
+        menuService.updateOne(menu);
         return Result.ok(menu);
     }
+
+    @GetMapping("/self")
+    public Result<List<Menu>> menuBySelf(){
+        return Result.ok(menuService.getMenuByUser(UserHolder.getUser().getId()));
+    }
+
 
 }

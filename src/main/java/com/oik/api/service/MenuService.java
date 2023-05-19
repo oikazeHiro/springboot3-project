@@ -4,7 +4,6 @@ import com.oik.api.entity.Menu;
 import com.github.yulichang.base.service.MPJJoinService;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -18,4 +17,10 @@ public interface MenuService extends MPJJoinService<Menu> {
 
 
     List<String> getParams(String userId);
+
+    List<Menu> getMenuByUser(String userId);
+
+    void saveOne(Menu menu);
+
+    void updateOne(Menu menu);
 }
