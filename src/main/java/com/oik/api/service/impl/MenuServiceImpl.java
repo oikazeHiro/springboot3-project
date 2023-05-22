@@ -1,5 +1,7 @@
 package com.oik.api.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.oik.api.entity.Menu;
 import com.oik.api.entity.Role;
@@ -7,7 +9,7 @@ import com.oik.api.entity.RoleMenu;
 import com.oik.api.entity.UserRole;
 import com.oik.api.mapper.MenuMapper;
 import com.oik.api.service.MenuService;
-import com.github.yulichang.base.MPJBaseServiceImpl;
+import com.oik.api.utils.pages.PagePlus;
 import com.oik.api.utils.redis.CacheClient;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -80,6 +82,21 @@ public class MenuServiceImpl extends MPJBaseServiceImpl<MenuMapper, Menu> implem
     @Override
     public void updateOne(Menu menu) {
         updateById(menu);
+    }
+
+    @Override
+    public IPage<Menu> find(PagePlus<Menu> pagePlus) {
+        Menu obj = pagePlus.getObj()==null?new Menu():pagePlus.getObj();
+        MPJLambdaWrapper<Menu> wrapper = new MPJLambdaWrapper<>();
+        wrapper.selectAll(Menu.class)
+                .like(StringUtils.isNotEmpty(obj.getName()),Menu::getName,obj.getName())
+                .eq(obj.getType()!=null,Menu::getType,obj.getType())
+                .eq(StringUtils.isNotEmpty(obj.getParentId()),Menu::getParentId,obj.getParentId());
+        List<Menu> list = selectJoinList(Menu.class, wrapper);
+        List<Menu> collect = list.stream()
+                .filter(e -> StringUtils.isEmpty(e.getParentId()) && e.getType() == 0).toList();
+        collect = toMenuList(list, collect);
+        return pagePlus.setRecords(collect);
     }
 
     /**

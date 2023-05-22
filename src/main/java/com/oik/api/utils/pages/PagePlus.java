@@ -22,15 +22,17 @@ public class PagePlus<T> extends Page<T> {
         return obj;
     }
 
-    public void setObj(T obj) {
+    public PagePlus<T> setObj(T obj) {
         this.obj = obj;
+        return this;
     }
 
     public Map<String, String> getOther() {
         return other;
     }
 
-    public void setOther(Map<String, String> other) {
+    public PagePlus<T> setOther(Map<String, String> other) {
         this.other = other;
+        return this;
     }
 }

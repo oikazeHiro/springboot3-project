@@ -1,7 +1,9 @@
 package com.oik.api.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.oik.api.entity.Menu;
 import com.oik.api.service.MenuService;
+import com.oik.api.utils.pages.PagePlus;
 import com.oik.api.utils.redis.UserHolder;
 import com.oik.api.utils.result.Result;
 import jakarta.annotation.Resource;
@@ -41,5 +43,8 @@ public class MenuController {
         return Result.ok(menuService.getMenuByUser(UserHolder.getUser().getId()));
     }
 
-
+    @PostMapping("/find")
+    public Result<IPage<Menu>> find(@RequestBody PagePlus<Menu> pagePlus){
+        return Result.ok(menuService.find(pagePlus));
+    }
 }

@@ -1,7 +1,9 @@
 package com.oik.api.service;
 
-import com.oik.api.entity.Menu;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.yulichang.base.service.MPJJoinService;
+import com.oik.api.entity.Menu;
+import com.oik.api.utils.pages.PagePlus;
 
 import java.util.List;
 
@@ -23,4 +25,6 @@ public interface MenuService extends MPJJoinService<Menu> {
     void saveOne(Menu menu);
 
     void updateOne(Menu menu);
+
+    IPage<Menu> find(PagePlus<Menu> pagePlus);
 }
