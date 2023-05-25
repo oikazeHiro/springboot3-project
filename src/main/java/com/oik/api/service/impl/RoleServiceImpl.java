@@ -1,11 +1,14 @@
 package com.oik.api.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.oik.api.entity.Role;
 import com.oik.api.entity.UserRole;
 import com.oik.api.mapper.RoleMapper;
 import com.oik.api.service.RoleService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
+import com.oik.api.utils.pages.PagePlus;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,5 +32,14 @@ public class RoleServiceImpl extends MPJBaseServiceImpl<RoleMapper, Role> implem
                 .leftJoin(UserRole.class,UserRole::getRoleId,Role::getId)
                 .eq(UserRole::getUserId,userId);
         return selectJoinList(Role.class, wrapper);
+    }
+
+    @Override
+    public IPage<Role> find(PagePlus<Role> page) {
+        Role obj = page.getObj();
+        MPJLambdaWrapper<Role> wrapper = new MPJLambdaWrapper<>();
+        wrapper.selectAll(Role.class)
+                .like(StringUtils.isNotEmpty(obj.getRoleName()),Role::getRoleName,obj.getRoleName());
+        return selectJoinListPage(page,Role.class, wrapper);
     }
 }

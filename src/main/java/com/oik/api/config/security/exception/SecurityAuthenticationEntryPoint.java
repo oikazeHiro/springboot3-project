@@ -23,6 +23,8 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
         response.setContentType("application/json; charset=utf-8");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", HttpContextUtils.getOrigin());
-        response.getWriter().print(JsonUtils.toString(Result.error(ErrorCode.UNAUTHORIZED)));
+        response.setStatus(401);
+        String string = JsonUtils.toString(Result.error(ErrorCode.UNAUTHORIZED));
+        response.getWriter().print(string);
     }
 }

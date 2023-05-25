@@ -1,6 +1,7 @@
 package com.oik.api.utils.exception;
 
 import com.oik.api.utils.result.Result;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
@@ -47,5 +48,11 @@ public class ServerExceptionHandler {
     public Result<String> handleException(Exception ex) {
         log.error(ex.getMessage(),ex);
         return Result.error(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public Result<String> expiredJwtException(ExpiredJwtException e){
+        log.error(e.getMessage());
+        return Result.error(ErrorCode.TOKEN_ERROR,e.getMessage());
     }
 }
