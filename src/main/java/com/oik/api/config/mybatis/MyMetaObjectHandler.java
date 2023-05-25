@@ -36,13 +36,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         }
         this.strictInsertFill(metaObject, "createdBy", String.class, id);
         this.strictInsertFill(metaObject, "updatedBy", String.class, id);
-
         //this.setFieldValByName("createUser",user.getUsername(),metaObject); //
-
-
     }
-
-
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("start update fill ....");
