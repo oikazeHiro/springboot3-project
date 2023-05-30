@@ -27,4 +27,8 @@ public interface MenuService extends MPJJoinService<Menu> {
     void updateOne(Menu menu);
 
     IPage<Menu> find(PagePlus<Menu> pagePlus);
+
+    List<Menu> all();
+
+    boolean deleteOne(String id);
 }

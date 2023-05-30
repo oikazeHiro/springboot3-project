@@ -1,5 +1,6 @@
 package com.oik.api.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
@@ -91,14 +92,55 @@ public class MenuServiceImpl extends MPJBaseServiceImpl<MenuMapper, Menu> implem
         wrapper.selectAll(Menu.class)
                 .like(StringUtils.isNotEmpty(obj.getName()),Menu::getName,obj.getName())
                 .eq(obj.getType()!=null,Menu::getType,obj.getType())
-                .eq(StringUtils.isNotEmpty(obj.getParentId()),Menu::getParentId,obj.getParentId());
-        List<Menu> list = selectJoinList(Menu.class, wrapper);
+                .eq(StringUtils.isNotEmpty(obj.getParentId()),Menu::getParentId,obj.getParentId())
+                .eq(obj.getLevel()!=null,Menu::getLevel,obj.getLevel());
+        return selectJoinListPage(pagePlus,Menu.class, wrapper);
+//        List<Menu> collect = list.stream()
+//                .filter(e -> StringUtils.isEmpty(e.getParentId()) && e.getType() == 0).toList();
+//        collect = toMenuList(list, collect);
+//        return list;
+    }
+
+    @Override
+    public List<Menu> all() {
+        List<Menu> list = baseMapper.selectList(null);
+        List<Menu> menusTree = getMenusTree(list);
+        ArrayList<Menu> Menus = new ArrayList<>();
+        Menus.add(new Menu().setName("menu").setChildren(menusTree));
+        return Menus;
+    }
+
+    @Override
+    public boolean deleteOne(String id) {
+        LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Menu::getParentId,id);
+        List<Menu> list = baseMapper.selectList(wrapper);
+        if (list.isEmpty()){
+            return removeById(id);
+        }
+        List<String> ids = getIds(list);
+        remove(wrapper);
+        return removeById(id);
+    }
+
+    private List<String> getIds(List<Menu> list) {
+        List<String> list1 = new ArrayList<>(list.stream().map(Menu::getId).toList());
+        LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Menu::getParentId,list1);
+        List<Menu> list2 = baseMapper.selectList(wrapper);
+        if (list2.isEmpty()){
+            return list1;
+        }
+        list1.addAll(getIds(list2));
+        return list1;
+    }
+
+    private List<Menu> getMenusTree(List<Menu> list) {
         List<Menu> collect = list.stream()
                 .filter(e -> StringUtils.isEmpty(e.getParentId()) && e.getType() == 0).toList();
         collect = toMenuList(list, collect);
-        return pagePlus.setRecords(collect);
+        return collect;
     }
-
     /**
      * list -> tree
      */

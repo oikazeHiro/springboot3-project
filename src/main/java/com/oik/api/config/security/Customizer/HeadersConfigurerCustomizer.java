@@ -18,6 +18,7 @@ public class HeadersConfigurerCustomizer implements Customizer<HeadersConfigurer
         httpSecurityHeadersConfigurer.frameOptions(new Customizer<HeadersConfigurer<org.springframework.security.config.annotation.web.builders.HttpSecurity>.FrameOptionsConfig>() {
             @Override
             public void customize(HeadersConfigurer<HttpSecurity>.FrameOptionsConfig frameOptionsConfig) {
+//                frameOptionsConfig.disable();
             }
         }).disable();
     }

@@ -47,4 +47,16 @@ public class MenuController {
     public Result<IPage<Menu>> find(@RequestBody PagePlus<Menu> pagePlus){
         return Result.ok(menuService.find(pagePlus));
     }
+
+    @DeleteMapping("/{id}")
+    public Result<Boolean> delete(@PathVariable("id") String id){
+        return Result.ok(menuService.deleteOne(id));
+    }
+
+    @GetMapping()
+    public Result<List<Menu>> all(){
+        return Result.ok(menuService.all());
+    }
+
+
 }

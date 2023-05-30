@@ -88,25 +88,18 @@ public class SecurityConfig {
         // 忽略授权的地址列表
         List<String> permitList = permitResource.getPermitList();
         String[] permits = permitList.toArray(new String[0]);
-        //= new Customizer<SessionManagementConfigurer<HttpSecurity>>();
-//        sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        exceptionHandlingConfigurer.authenticationEntryPoint(new SecurityAuthenticationEntryPoint());
-//        customizer.customize(sessionManagementConfigurer);
         http
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sessionManagementConfigurerCustomizer)
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(permits).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandlingConfigurerCustomizer)
-//                .authenticationEntryPoint(new SecurityAuthenticationEntryPoint())
                 .headers(headersConfigurerCustomizer)
                 .csrf(csrfConfigurerCustomizer)
         ;
-
         return http.build();
     }
 }
