@@ -3,12 +3,14 @@ package com.oik.api.config.mybatis;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 15093
  * @description TODO
  * @date 2023/5/16 17:33
  */
+@Component
 public class CustomIdGenerator implements IdentifierGenerator {
     @Override
     public boolean assignId(Object idValue) {

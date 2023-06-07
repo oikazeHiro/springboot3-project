@@ -1,5 +1,6 @@
 package com.oik.api.utils.jwt;
 
+import com.alibaba.fastjson2.JSON;
 import com.oik.api.entity.Role;
 import com.oik.api.entity.User;
 import com.oik.api.service.MenuService;
@@ -45,13 +46,15 @@ public class TokenStoreCache {
     }
 
     public User getUser(String token){
-        Payload<String> payload = JwtUtils.getInfoFromToken(token, rsaKeyProperties.getPublicKey(), String.class);
-        String userId = payload.getUserInfo();
-        User user = cacheClient.getValue(CACHE_USER_INFO, userId, userId, User.class, userService::getById);
-        List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE,userId, userId, Role.class, roleService::getByUserId);
-        List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
-        user.setSysRole(roles);
-        user.setParams(new HashSet<>(params));
+        String value = cacheClient.getValue(CACHE_USER_TOKEN, token);
+//        Payload<String> payload = JwtUtils.getInfoFromToken(value, rsaKeyProperties.getPublicKey(), String.class);
+//        String userStr = payload.getUserInfo();
+        User user = AuthJwt.parseToken(value);
+//        User user = cacheClient.getValue(CACHE_USER_INFO, userId, userId, User.class, userService::getById);
+//        List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE,userId, userId, Role.class, roleService::getByUserId);
+//        List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
+//        user.setSysRole(roles);
+//        user.setParams(new HashSet<>(params));
         UserHolder.saveUser(user);
         return user;
     }

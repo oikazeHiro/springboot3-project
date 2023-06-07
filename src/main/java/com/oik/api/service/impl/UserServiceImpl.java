@@ -1,15 +1,21 @@
 package com.oik.api.service.impl;
 
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.oik.api.entity.Role;
 import com.oik.api.entity.User;
 import com.oik.api.mapper.UserMapper;
+import com.oik.api.service.MenuService;
+import com.oik.api.service.RoleService;
 import com.oik.api.service.UserService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.oik.api.utils.dto.LoginDto;
 import com.oik.api.utils.exception.ServerException;
 import com.oik.api.utils.http.ErrorCode;
+import com.oik.api.utils.jwt.AuthJwt;
 import com.oik.api.utils.jwt.JwtUtils;
 import com.oik.api.utils.jwt.RsaKeyProperties;
 import com.oik.api.utils.redis.CacheClient;
@@ -19,8 +25,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.oik.api.utils.redis.RedisConstants.CACHE_CAPTCHA;
-import static com.oik.api.utils.redis.RedisConstants.CACHE_USER_INFO;
+import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static com.oik.api.utils.redis.RedisConstants.*;
+import static com.oik.api.utils.redis.RedisConstants.CACHE_USER_PARAMS;
 
 /**
  * <p>
@@ -39,6 +49,10 @@ public class UserServiceImpl extends MPJBaseServiceImpl<UserMapper, User> implem
     private RsaKeyProperties rsaKeyProperties;
     @Resource
     private CacheClient cacheClient;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private MenuService menuService;
 
     @Override
     public String test() {
@@ -93,12 +107,24 @@ public class UserServiceImpl extends MPJBaseServiceImpl<UserMapper, User> implem
     }
 
     private void generateInfo(User user) {
+        String userId = user.getId();
+        List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE,userId, userId, Role.class, roleService::getByUserId);
+        List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
+        user.setSysRole(roles);
+        user.setParams(new HashSet<>(params));
         cacheClient.set(CACHE_USER_INFO+user.getId(),user);
-        String token = JwtUtils.generateTokenExpireInDay(user.getId(), rsaKeyProperties.getPrivateKey(), 7);
-        user.setToken(token);
+        String uuid = IdUtil.fastUUID()+"-"+userId;
+        user.setToken(uuid);
+//        String token = JwtUtils.generateTokenExpireInDay(JSON.toJSONString(user), rsaKeyProperties.getPrivateKey(), 7);
+        String token = AuthJwt.generateToken(user);
+//        user.setToken(token);
+        cacheClient.set(CACHE_USER_TOKEN+uuid,token,30L, TimeUnit.DAYS);
         generateLoginInfo(user);
     }
 
+    /**
+     * // todo 忘了要干什么了
+     */
     private void generateLoginInfo(User user) {
     }
 
