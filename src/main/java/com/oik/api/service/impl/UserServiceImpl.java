@@ -113,7 +113,7 @@ public class UserServiceImpl extends MPJBaseServiceImpl<UserMapper, User> implem
         user.setSysRole(roles);
         user.setParams(new HashSet<>(params));
         cacheClient.set(CACHE_USER_INFO+user.getId(),user);
-        String uuid = IdUtil.fastUUID()+"-"+userId;
+        String uuid = userId+":"+IdUtil.fastUUID();
         user.setToken(uuid);
 //        String token = JwtUtils.generateTokenExpireInDay(JSON.toJSONString(user), rsaKeyProperties.getPrivateKey(), 7);
         String token = AuthJwt.generateToken(user);
