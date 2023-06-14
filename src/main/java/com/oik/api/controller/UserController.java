@@ -3,6 +3,7 @@ package com.oik.api.controller;
 import com.oik.api.entity.User;
 import com.oik.api.service.UserService;
 import com.oik.api.utils.dto.LoginDto;
+import com.oik.api.utils.redis.UserHolder;
 import com.oik.api.utils.result.Result;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +47,11 @@ public class UserController {
     @PostMapping("/login/email")
     public Result<User> loginByEmail(@RequestBody LoginDto loginDto){
         return Result.ok(userService.loginByEmail(loginDto));
+    }
+
+    @GetMapping("/info")
+    public Result<User> getInfo(){
+        return Result.ok(UserHolder.getUser());
     }
 
 }

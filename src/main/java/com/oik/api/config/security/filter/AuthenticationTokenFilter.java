@@ -34,7 +34,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         boolean isAuthToken = false;
         String accessToken = TokenUtils.getAccessToken(request);
-        if (accessToken.isBlank()){
+        if (StringUtils.isBlank(accessToken)){
             accessToken = request.getParameter("access_token");
             isAuthToken = true;
         }
