@@ -30,36 +30,37 @@ import static com.oik.api.utils.redis.RedisConstants.*;
 public class TokenStoreCache {
     private final CacheClient cacheClient;
 
-    private final RsaKeyProperties rsaKeyProperties;
-
-    @Resource
-    private UserService userService;
+//    private final RsaKeyProperties rsaKeyProperties;
+//
+//    @Resource
+//    private UserService userService;
     @Resource
     private RoleService roleService;
     @Resource
     private MenuService menuService;
-    public  void saveUser(User user, List<Role> roles, Set<String> params){
+
+    public void saveUser(User user, List<Role> roles, Set<String> params) {
 //        String token = JwtUtils.generateTokenExpireInDay(user, rsaKeyProperties.getPrivateKey(), TOKEN_EXPIRED_TIME);
-        cacheClient.set(CACHE_USER_INFO+user.getId(),user);
-        cacheClient.set(CACHE_USER_ROLE+user.getId(),roles);
-        cacheClient.set(CACHE_USER_PARAMS+user.getId(),params);
+        cacheClient.set(CACHE_USER_INFO + user.getId(), user);
+        cacheClient.set(CACHE_USER_ROLE + user.getId(), roles);
+        cacheClient.set(CACHE_USER_PARAMS + user.getId(), params);
     }
 
-    public User getUser(String token){
+    public User getUser(String token, boolean isAuthToken) {
         String value = cacheClient.getValue(CACHE_USER_TOKEN, token);
-//        Payload<String> payload = JwtUtils.getInfoFromToken(value, rsaKeyProperties.getPublicKey(), String.class);
-//        String userStr = payload.getUserInfo();
         User user = AuthJwt.parseToken(value);
-//        User user = cacheClient.getValue(CACHE_USER_INFO, userId, userId, User.class, userService::getById);
-//        List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE,userId, userId, Role.class, roleService::getByUserId);
-//        List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
-//        user.setSysRole(roles);
-//        user.setParams(new HashSet<>(params));
+        if (!isAuthToken) {
+            String userId = user.getId();
+            List<Role> roles = cacheClient.getListValue(CACHE_USER_ROLE, userId, userId, Role.class, roleService::getByUserId);
+            List<String> params = cacheClient.getListValue(CACHE_USER_PARAMS, userId, userId, String.class, menuService::getParams);
+            user.setSysRole(roles);
+            user.setParams(new HashSet<>(params));
+        }
         UserHolder.saveUser(user);
         return user;
     }
 
-    public void deleteUser(String token){
+    public void deleteUser(String token) {
 
     }
 }

@@ -32,7 +32,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        boolean isAuthToken = false;
         String accessToken = TokenUtils.getAccessToken(request);
+        if (accessToken.isBlank()){
+            accessToken = request.getParameter("access_token");
+            isAuthToken = true;
+        }
         // accessToken为空，表示未登录
         if (StringUtils.isBlank(accessToken)) {
             chain.doFilter(request, response);
@@ -42,7 +47,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取登录用户信息
         User user = null;
         try {
-            user = tokenStoreCache.getUser(accessToken);
+            user = tokenStoreCache.getUser(accessToken,isAuthToken);
         }catch (Exception e){
             log.error(e.getMessage());
         }
