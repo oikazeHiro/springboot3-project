@@ -6,11 +6,9 @@ import com.oik.api.utils.jwt.JsonUtils;
 import com.oik.api.utils.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-
 import java.io.IOException;
 /**
  * @author 15093
@@ -19,7 +17,6 @@ import java.io.IOException;
  */
 @Slf4j
 public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setContentType("application/json; charset=utf-8");

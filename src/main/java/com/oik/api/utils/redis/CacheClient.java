@@ -85,6 +85,9 @@ public class CacheClient {
     public String getValue(String keyPrefix,String key){
          return stringRedisTemplate.opsForValue().get(keyPrefix + key);
     }
+    public String getValue(String key){
+         return stringRedisTemplate.opsForValue().get(key);
+    }
 
     /**
      *根据key删除redis数据

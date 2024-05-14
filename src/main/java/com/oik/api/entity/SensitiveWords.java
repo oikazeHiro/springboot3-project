@@ -1,16 +1,13 @@
 package com.oik.api.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.oik.api.config.note.IdRule;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -20,10 +17,10 @@ import lombok.experimental.Accessors;
  * @author oik
  * @since 2023-05-29
  */
-@Getter
-@Setter
+@Data
 @TableName("sys_sensitive_words")
 @Accessors(chain = true)
+@IdRule
 public class SensitiveWords implements Serializable {
 
     @Serial
@@ -32,7 +29,7 @@ public class SensitiveWords implements Serializable {
     /**
      * id
      */
-    @TableId("id")
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     /**

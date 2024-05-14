@@ -1,7 +1,9 @@
 package com.oik.api.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.oik.api.entity.SensitiveWords;
 import com.github.yulichang.base.service.MPJJoinService;
+import com.oik.api.utils.pages.PagePlus;
 
 import java.util.List;
 
@@ -18,4 +20,6 @@ public interface SensitiveWordsService extends MPJJoinService<SensitiveWords> {
     SensitiveWords saveOne(SensitiveWords words);
     SensitiveWords updateOne(SensitiveWords words);
     boolean deleteOne(String id);
+
+    Page<SensitiveWords> find(PagePlus<SensitiveWords> pagePlus);
 }

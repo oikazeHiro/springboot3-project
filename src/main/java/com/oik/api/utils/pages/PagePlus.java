@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.*;
 
 /**
- * @author 15093
- * @description TODO
+ * @author oik
+ * @description 继承 mybatis-plus 的自定义分页插件
  * @date 2023/5/5 9:52
  */
 public class PagePlus<T> extends Page<T> {
-    protected T obj;
-    protected Map<String,String> other;
+    protected T obj; // 一般查询条件
+    protected Map<String,String> other; // 普通查询条件
 
     public PagePlus(){
         super();

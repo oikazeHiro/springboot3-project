@@ -41,13 +41,13 @@ public class ServerExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public Result<String> handleAccessDeniedException(AccessDeniedException ex) {
         log.error(ex.getMessage());
-        return Result.error(ErrorCode.FORBIDDEN);
+        return Result.error(ErrorCode.FORBIDDEN,ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public Result<String> handleException(Exception ex) {
         log.error(ex.getMessage(),ex);
-        return Result.error(ErrorCode.INTERNAL_SERVER_ERROR);
+        return Result.error(ErrorCode.INTERNAL_SERVER_ERROR,ex.getMessage());
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
