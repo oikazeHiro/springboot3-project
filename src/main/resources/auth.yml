@@ -1,9 +1,14 @@
 auth:
   ignore_urls:
-    - /swagger/**
     - /user/login/account
     - /user/login/phone
     - /user/login/email
     - /test/**
-    - /swagger-ui/**
-    - /swagger-ui.html
+    - /doc.html
+    - /swagger-resources/**
+    - /webjars/**
+    - /v2/api-docs/**
+    - /v3/api-docs/**
+    - /captcha
+    - /index.html
+    - /favicon.ico

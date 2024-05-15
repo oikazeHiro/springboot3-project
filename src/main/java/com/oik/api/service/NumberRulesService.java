@@ -1,6 +1,6 @@
 package com.oik.api.service;
 
-import com.github.yulichang.base.MPJBaseMapper;
+import com.github.yulichang.base.MPJBaseService;
 import com.oik.api.entity.NumberRules;
 
 /**
@@ -11,7 +11,7 @@ import com.oik.api.entity.NumberRules;
  * @author oik
  * @since 2024-01-18
  */
-public interface NumberRulesService extends MPJBaseMapper<NumberRules> {
+public interface NumberRulesService extends MPJBaseService<NumberRules> {
 
     NumberRules initRule(String code);
 

@@ -1,7 +1,6 @@
 package com.oik.api.utils.result;
 
 import com.oik.api.utils.http.ErrorCode;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -10,7 +9,6 @@ import lombok.Data;
  * @date 2023/5/11 10:22
  */
 @Data
-@Schema(description = "响应")
 public class Result<T> {
     private int code = 200;
     private String msg = "success";

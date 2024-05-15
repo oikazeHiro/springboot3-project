@@ -6,7 +6,6 @@ import com.oik.api.entity.SensitiveWords;
 import com.oik.api.service.NumberRulesService;
 import com.oik.api.service.SensitiveWordsService;
 import jakarta.annotation.Resource;
-import jakarta.annotation.Resources;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

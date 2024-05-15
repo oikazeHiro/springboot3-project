@@ -1,7 +1,6 @@
 package com.oik.api.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayDeque;
@@ -11,15 +10,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author 15093
- * @description TODO
- * @date 2023/5/29 13:30
+ * oh, shit. 这是什么玩意来着
+ *
  */
 @Data
 @Accessors(chain = true)
 public class ACTrie {
 
-    class AcNode {
+    static class AcNode {
         char data;
         Map<Character, AcNode> children = new ConcurrentHashMap<>();
         boolean isEndingChar = false;
@@ -47,7 +45,7 @@ public class ACTrie {
         AcNode cur = root;
         for (char c : word.toCharArray()){
             if (!cur.children.containsKey(c)){
-                cur.children.put(c,new AcNode(c));
+                cur.children.put(c, new AcNode(c));
             }
             cur = cur.children.get(c);
         }
@@ -96,7 +94,7 @@ public class ACTrie {
             }
         }
     }
-    class ParseResult {
+    public static class ParseResult {
         int startIndex;
         int endIndex;
         String key;
@@ -148,9 +146,8 @@ public class ACTrie {
                 while (temp != null) {
                     //如果当前节点是某个关键词的结尾，那么取出来
                     if (temp.isEndingChar) {
-                        int start = i - temp.length + 1, end = i;
-                        parseResults.add(new ParseResult(start, end, new String(chars, start, temp.length)));
-                        //System.out.println(start + " " + end + " " + new String(chars, start, temp.depth));
+                        int start = i - temp.length + 1;
+                        parseResults.add(new ParseResult(start, i, new String(chars, start, temp.length)));
                     }
                     //继续判断该节点的失配指针节点
                     //因为失配指针节点表示的模式串是当前匹配的模式串的在这些关键词中的最长后缀，且由于当前节点的路径包括了失配指针的全部路径

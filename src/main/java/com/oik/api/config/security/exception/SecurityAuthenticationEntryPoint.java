@@ -11,9 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 /**
- * @author 15093
- * @description TODO
- * @date 2023/5/11 10:16
  */
 @Slf4j
 public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoint {
