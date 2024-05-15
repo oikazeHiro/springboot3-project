@@ -1,7 +1,7 @@
 package com.oik.api.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.github.yulichang.base.service.MPJJoinService;
+import com.github.yulichang.base.MPJBaseService;
 import com.oik.api.entity.Menu;
 import com.oik.api.utils.pages.PagePlus;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author oik
  * @since 2023-05-11
  */
-public interface MenuService extends MPJJoinService<Menu> {
+public interface MenuService extends MPJBaseService<Menu> {
 
 
     List<String> getParams(String userId);

@@ -1,7 +1,7 @@
 package com.oik.api.service;
 
 import com.oik.api.entity.User;
-import com.github.yulichang.base.service.MPJJoinService;
+import com.github.yulichang.base.MPJBaseService;
 import com.oik.api.utils.dto.LoginDto;
 
 /**
@@ -12,7 +12,7 @@ import com.oik.api.utils.dto.LoginDto;
  * @author oik
  * @since 2023-05-02
  */
-public interface UserService extends MPJJoinService<User> {
+public interface UserService extends MPJBaseService<User> {
 
     String test();
 

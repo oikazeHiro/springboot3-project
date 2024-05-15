@@ -140,7 +140,7 @@ public class mybatisPlusGenerate {
                 .enableRestStyle()
                 .formatFileName("%sController")
                 .serviceBuilder()
-                .superServiceClass("com.github.yulichang.base.service.MPJJoinService")
+                .superServiceClass("com.github.yulichang.base.service.MPJBaseService")
                 .superServiceImplClass("com.github.yulichang.base.MPJBaseServiceImpl")
                 .formatServiceFileName("%sService")
                 .formatServiceImplFileName("%sServiceImpl")

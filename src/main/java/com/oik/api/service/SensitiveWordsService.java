@@ -2,7 +2,7 @@ package com.oik.api.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.oik.api.entity.SensitiveWords;
-import com.github.yulichang.base.service.MPJJoinService;
+import com.github.yulichang.base.MPJBaseService;
 import com.oik.api.utils.pages.PagePlus;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author oik
  * @since 2023-05-29
  */
-public interface SensitiveWordsService extends MPJJoinService<SensitiveWords> {
+public interface SensitiveWordsService extends MPJBaseService<SensitiveWords> {
     List<String> findAll();
     SensitiveWords saveOne(SensitiveWords words);
     SensitiveWords updateOne(SensitiveWords words);

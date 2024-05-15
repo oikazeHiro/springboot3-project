@@ -1,7 +1,7 @@
 package com.oik.api.service;
 
 import com.oik.api.entity.UserRole;
-import com.github.yulichang.base.service.MPJJoinService;
+import com.github.yulichang.base.MPJBaseService;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ import com.github.yulichang.base.service.MPJJoinService;
  * @author oik
  * @since 2023-05-11
  */
-public interface UserRoleService extends MPJJoinService<UserRole> {
+public interface UserRoleService extends MPJBaseService<UserRole> {
 
     void saveOne(UserRole userRole);
 }
